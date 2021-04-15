@@ -1,37 +1,38 @@
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.6.0 <0.8.0;
-import "./CloneFactory.sol";
 
-// Athletes are functionally the same, just differentiated by price / feed
-// event newAthlete(uint aID, string name, uint aPrice ); //This is broken -- didn't apply concepts correctly
+// Athlete are functionally the same, just differentiated by price / feed
 
-contract AthleteFactory is CloneFactory 
+contract AthleteFactory 
 {
-    struct Athletes {
+    struct Athlete {
+        string aID;
         string aName;
         uint aPrice;
     }
+    event newAthlete(string aID, string name, uint aPrice ); //This is broken -- didn't apply concepts correctly
 
-    Athletes[] public arrAthlete;
+    Athlete[] public arrAthlete;
     address masterContract;
-
     // memory - temporary -> use for pricing value
     // storage - permanent -> transactions
 
+    mapping (uint => string) aID;
     mapping (uint => address) public athleteToOwner;
     mapping (address => uint) ownerAthleteCount;
 
-    constructor (address memory _mC)
-    {
-        masterContract = _mC;
-    }
-
+    //Keep track of all the athlete tokens in existence
     function createAthlete(string memory _name, uint _price) external {
-        arrAthlete.push(Athletes(_name, _price));
+        string memory aID = this._generateUniqueSigniature(_price);
+        uint key = arrAthlete.push(Athlete( aID, _name, _price)) -1; // Circular dependency...
+        emit newAthlete( aID, _name, _price);
     }
 
-    function getPrice() external
-    {
-        
+
+    function _generateUniqueSigniature(uint _key) private view returns (string memory Athleteignature) {
+        // trace all Athlete tokens back to AE via uniquely signatures
+        uint sign = uint(keccak256(abi.encodePacked(_key))); //Very insecure for now!
+        return aID[sign];
     }
 
 }
