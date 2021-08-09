@@ -1,5 +1,5 @@
 
- const HDWalletProvider = require('truffle-hdwallet-provider');
+ const HDWalletProvider = require('@truffle/hdwallet-provider');
  const fs = require('fs');
  const mnemonic = fs.readFileSync(".secret").toString().trim();
 
@@ -20,12 +20,13 @@ module.exports = {
     },
     mumbai: { //MATIC TESTNET
       provider: function() {
-        return new HDWalletProvider(mnemonic, "https://rpc-mumbai.matic.today");
+        return new HDWalletProvider(mnemonic, "https://matic-mumbai.chainstacklabs.com");
       },
       network_id: 80001,
       confirmations: 2,
       timeoutBlocks: 200,
-      skipDryRun: true
+      skipDryRun: true,
+      chainId: 80001
     },
     bsc: { // BINANCE SMART CHAIN MAINNET
       provider: () => new HDWalletProvider(mnemonic, `https://bsc-dataseed1.binance.org`),

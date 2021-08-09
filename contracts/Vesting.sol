@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 contract Vesting {
 
     IERC20 AX;
@@ -14,7 +16,7 @@ contract Vesting {
 
     constructor()
     {
-        AX = IERC20(tokenAddress);
+        // AX = IERC20(tokenAddress);
     }
 
     // Automatically deposit funds 
@@ -28,13 +30,13 @@ contract Vesting {
     }
 
     // Automatically withdraw funds
-    function release() {
+    function release() public {
 
     }
 
     function getUserContribution(address _beneficiary)
     public view returns (uint256)
     {
-        return contributions[_beneficiary];
+        // return contributions[_beneficiary];
     }
 }
